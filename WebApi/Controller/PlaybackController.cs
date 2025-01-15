@@ -11,13 +11,15 @@ namespace WebApi.Controller
 {   
     [ApiController]
     [Route("[controller]")]
-    public class StreamController : ControllerBase
+    public class PlaybackController : ControllerBase
     {
-        private readonly AppDbContext _context;
 
-        public StreamController(AppDbContext context)
+        [HttpGet]        
+        public IActionResult PlayBackVideo(string name)
         {
-            _context = context;
+             string videoDirectory = "http://localhost/videos/Listen+.mp4";
+
+             return Redirect(videoDirectory);
         }
 
 
