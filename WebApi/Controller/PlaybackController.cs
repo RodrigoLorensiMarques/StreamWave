@@ -22,8 +22,8 @@ namespace WebApi.Controller
     }
 
 
-    [HttpGet]        
-    public async Task<IActionResult> PlayBackVideo(PlayBackVideoDTO input)
+    [HttpPost]        
+    public async Task<IActionResult> PlayBackVideo([FromBody] PlayBackVideoDTO input)
     {
         try
         {
