@@ -12,8 +12,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
-
-
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 

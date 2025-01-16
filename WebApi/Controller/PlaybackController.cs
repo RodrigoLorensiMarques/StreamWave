@@ -8,22 +8,63 @@ using Microsoft.Extensions.Logging;
 using WebApi.Data;
 
 namespace WebApi.Controller
-{   
+{
     [ApiController]
     [Route("[controller]")]
     public class PlaybackController : ControllerBase
     {
 
-        [HttpGet]        
-        public IActionResult PlayBackVideo(string name)
+    private readonly HttpClient _httpClient;
+    public PlaybackController(HttpClient httpClient)
+    {
+        _httpClient = httpClient;
+    }
+
+
+    [HttpGet]        
+    public async Task<IActionResult> PlayBackVideo(string name)
+    {
+        try
         {
-             string videoDirectory = "http://localhost/videos/Listen+.mp4";
+            string videoUrl = $"http://localhost/videos/{name}.mp4";
 
-             return Redirect(videoDirectory);
+            HttpResponseMessage response = await _httpClient.GetAsync(videoUrl, HttpCompletionOption.ResponseContentRead);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var contentStream = await response.Content.ReadAsStreamAsync();
+                string contentType;
+
+                if (response.Content.Headers.ContentType != null)
+                {
+                        contentType = response.Content.Headers.ContentType.ToString();
+                }
+
+                else{
+                        contentType = "/Video.mp4";
+                }
+
+                return File(contentStream, contentType);
+            }
+
+            else
+            {
+                return NotFound("Item não encontrado");
+            }
         }
-
-
         
+        catch (Exception)
+        {
+
+            return StatusCode(500, "01X41 - Ocorreu um erro interno ao processar sua solicitação");
+        }
+    }
+
+
+
+
+
+
 
 
     }
