@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using WebApi.Data;
+using WebApi.DTOs;
 
 namespace WebApi.Controller
 {   
@@ -34,7 +35,7 @@ namespace WebApi.Controller
                 {
                     return NotFound($"Não existem vídeos com nome de '{name}' ");
                 }
-
+                
                 return Ok(videos);
             }
             catch (Exception)
