@@ -29,14 +29,26 @@ namespace WebApi.Controller
         {
             try
             {
-                var videos = await _context.Videos.Where(x => x.Name == name).ToListAsync();
+                var videosDb = await _context.Videos.Where(x => x.Name.Contains(name)).ToListAsync();
 
-                if (videos.IsNullOrEmpty())
+                if (videosDb.IsNullOrEmpty())
                 {
                     return NotFound($"Não existem vídeos com nome de '{name}' ");
                 }
-                
-                return Ok(videos);
+
+                List<GetVideoDTO> videosDTO = new List<GetVideoDTO>();
+
+                foreach (var video in videosDb)
+                {
+                    GetVideoDTO videoDTO = new GetVideoDTO();
+                    videoDTO.Name = video.Name;
+                    videoDTO.Description = video.Description;
+
+                    videosDTO.Add(videoDTO);
+                }
+
+                return Ok(videosDTO);
+
             }
             catch (Exception)
             {
@@ -51,14 +63,25 @@ namespace WebApi.Controller
         {
             try
             {
-                var videos = await _context.Videos.ToListAsync();
+                var videosDb = await _context.Videos.ToListAsync();
 
-                if (videos.IsNullOrEmpty())
+                if (videosDb.IsNullOrEmpty())
                 {
                     return NotFound("Não há vídeos cadastrados");
                 }
 
-                return Ok(videos);
+                List<GetVideoDTO> videosDTO = new List<GetVideoDTO>();
+
+                foreach (var video in videosDb)
+                {
+                    GetVideoDTO videoDTO = new GetVideoDTO();
+                    videoDTO.Name = video.Name;
+                    videoDTO.Description = video.Description;
+
+                    videosDTO.Add(videoDTO);
+                }
+
+                return Ok(videosDTO);
             }
             catch (Exception)
             {
