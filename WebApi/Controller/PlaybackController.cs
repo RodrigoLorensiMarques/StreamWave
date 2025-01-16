@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebApi.Data;
+using WebApi.DTOs;
 
 namespace WebApi.Controller
 {
@@ -22,11 +23,11 @@ namespace WebApi.Controller
 
 
     [HttpGet]        
-    public async Task<IActionResult> PlayBackVideo(string name)
+    public async Task<IActionResult> PlayBackVideo(PlayBackVideoDTO input)
     {
         try
         {
-            string videoUrl = $"http://localhost/videos/{name}.mp4";
+            string videoUrl = $"http://localhost/videos/{input.Name}.mp4";
 
             HttpResponseMessage response = await _httpClient.GetAsync(videoUrl, HttpCompletionOption.ResponseContentRead);
 
@@ -37,11 +38,11 @@ namespace WebApi.Controller
 
                 if (response.Content.Headers.ContentType != null)
                 {
-                        contentType = response.Content.Headers.ContentType.ToString();
+                    contentType = response.Content.Headers.ContentType.ToString();
                 }
 
                 else{
-                        contentType = "/Video.mp4";
+                    contentType = "/Video.mp4";
                 }
 
                 return File(contentStream, contentType);
@@ -49,23 +50,15 @@ namespace WebApi.Controller
 
             else
             {
-                return NotFound("Item não encontrado");
+                return NotFound($"O vídeo com nome de {input.Name} não foi entrontrado");
             }
         }
-        
+
         catch (Exception)
         {
-
             return StatusCode(500, "01X41 - Ocorreu um erro interno ao processar sua solicitação");
         }
     }
 
-
-
-
-
-
-
-
-    }
+        }
 }
