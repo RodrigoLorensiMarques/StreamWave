@@ -1,6 +1,7 @@
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace WebApi.Controller
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetVideo(string name)
+        public async Task<IActionResult> GetVideo([Required]string name)
         {
             try
             {
