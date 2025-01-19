@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using WebApi.Data;
 using WebApi.DTOs;
+using WebApi.Entities;
 
 namespace WebApi.Controller
 {   
@@ -26,7 +27,7 @@ namespace WebApi.Controller
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetVideo([Required]string name)
+        public async Task<IActionResult> GetVideosByName([Required]string name)
         {
             try
             {
@@ -34,7 +35,7 @@ namespace WebApi.Controller
 
                 if (videosDb.IsNullOrEmpty())
                 {
-                    return NotFound($"Não existem vídeos com nome de '{name}' ");
+                    return NotFound(new ResultDTO<Video>($"Não existem vídeos com nome de '{name}' "));
                 }
 
                 List<GetVideoDTO> videosDTO = new List<GetVideoDTO>();
@@ -48,13 +49,12 @@ namespace WebApi.Controller
                     videosDTO.Add(videoDTO);
                 }
 
-                return Ok(videosDTO);
-
+                return Ok(new ResultDTO<List<GetVideoDTO>>(videosDTO));
             }
             catch (Exception)
             {
 
-                return StatusCode(500, "01X37 - Ocorreu um erro interno ao processar sua solicitação");
+                return StatusCode(500, new ResultDTO<Video>("01X37 - Ocorreu um erro interno ao processar sua solicitação"));
             }
         }
 
@@ -68,7 +68,7 @@ namespace WebApi.Controller
 
                 if (videosDb.IsNullOrEmpty())
                 {
-                    return NotFound("Não há vídeos cadastrados");
+                    return NotFound(new ResultDTO<Video>("Não há vídeos cadastrados"));
                 }
 
                 List<GetVideoDTO> videosDTO = new List<GetVideoDTO>();
@@ -82,18 +82,13 @@ namespace WebApi.Controller
                     videosDTO.Add(videoDTO);
                 }
 
-                return Ok(videosDTO);
+                return Ok(new ResultDTO<List<GetVideoDTO>>(videosDTO));
             }
             catch (Exception)
             {
                 
-                return StatusCode(500, "01X38 - Ocorreu um erro interno ao processar sua solicitação");
+                return StatusCode(500, new ResultDTO<Video>( "01X38 - Ocorreu um erro interno ao processar sua solicitação"));
             }
         }
-
-
-        
-
-
     }
 }
