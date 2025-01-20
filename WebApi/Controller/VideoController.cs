@@ -20,10 +20,12 @@ namespace WebApi.Controller
     public class VideoController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly HttpClient _httpClient;
 
-        public VideoController(AppDbContext context)
+        public VideoController(AppDbContext context, HttpClient httpClient)
         {
             _context = context;
+            _httpClient = httpClient;
         }
 
         [HttpGet("videos")]
@@ -89,6 +91,28 @@ namespace WebApi.Controller
                 
                 return StatusCode(500, new ResultDTO<Video>( "01X38 - Ocorreu um erro interno ao processar sua solicitação"));
             }
+        }
+
+
+        [HttpPost("videos/upload")]
+        public async Task<IActionResult> UploadVideo(IFormFile file)
+        {
+            string fileExtension = Path.GetExtension(file.FileName);
+
+
+            if (!fileExtension.Contains(".mp4"))
+                return BadRequest("Tipo de arquivo não suportado");
+
+            string videosPath = "C:/nginx/var/www/videos";
+
+            string filePath = Path.Combine(videosPath, file.FileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+            return Ok($"Arquivo {file.FileName} enviado com sucesso");
         }
     }
 }
