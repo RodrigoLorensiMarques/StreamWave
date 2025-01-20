@@ -17,6 +17,7 @@ namespace WebApi.Data
 
 
         public DbSet<Video> Videos { get; set; }
+        public DbSet<User> Users { get; set; }
 
 
 

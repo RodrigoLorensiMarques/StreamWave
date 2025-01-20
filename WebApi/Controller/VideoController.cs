@@ -35,7 +35,7 @@ namespace WebApi.Controller
             {
                 var videosDb = await _context.Videos.Where(x => x.Name.Contains(name)).ToListAsync();
 
-                if (videosDb.IsNullOrEmpty())
+                if (!videosDb.Any())
                 {
                     return NotFound(new ResultDTO<Video>($"Não existem vídeos com nome de '{name}' "));
                 }
@@ -68,7 +68,7 @@ namespace WebApi.Controller
             {
                 var videosDb = await _context.Videos.ToListAsync();
 
-                if (videosDb.IsNullOrEmpty())
+                if (!videosDb.Any())
                 {
                     return NotFound(new ResultDTO<Video>("Não há vídeos cadastrados"));
                 }
@@ -95,24 +95,48 @@ namespace WebApi.Controller
 
 
         [HttpPost("videos/upload")]
-        public async Task<IActionResult> UploadVideo(IFormFile file)
+        public async Task<IActionResult> UploadVideo([FromForm]UploadVideoDTO input)
         {
-            string fileExtension = Path.GetExtension(file.FileName);
+            try
+            {
+                var videoDb = await _context.Videos.FirstOrDefaultAsync(x => x.Name == input.Name);
+
+                 if (videoDb != null)
+                 {
+                     return BadRequest("Um vídeo com esse nome já foi cadastrado");
+                 }
+
+                 Video newVideo = new Video();
+                 newVideo.Name = input.Name;
+                 newVideo.Description = input.Description;
+                 newVideo.DateAdd = DateTime.Now;
+
+                 await _context.Videos.AddAsync(newVideo);
+                 await _context.SaveChangesAsync();
 
 
-            if (!fileExtension.Contains(".mp4"))
-                return BadRequest("Tipo de arquivo não suportado");
+                string fileExtension = Path.GetExtension(input.File.FileName);
 
-            string videosPath = "C:/nginx/var/www/videos";
+                if (!fileExtension.Contains(".mp4"))
+                    return BadRequest("Tipo de arquivo não suportado");
 
-            string filePath = Path.Combine(videosPath, file.FileName);
+                string videosPath = "C:/nginx/var/www/videos";
 
-            using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
+                input.Name = input.Name + ".mp4";
 
-            return Ok($"Arquivo {file.FileName} enviado com sucesso");
+                string filePath = Path.Combine(videosPath, input.Name);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await input.File.CopyToAsync(stream);
+                    }
+
+                return Ok(new ResultDTO<UploadVideoDTO>($"Arquivo {input.Name} enviado com sucesso"));
+            }
+            catch (Exception)
+            {
+               return StatusCode(500, new ResultDTO<Video>( "01X89 - Ocorreu um erro interno ao processar sua solicitação"));
+            }
         }
     }
 }

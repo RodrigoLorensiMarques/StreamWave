@@ -314,3 +314,5 @@ C:\Users\Rodrigo\Documents\Rec\StreamWave\webapi\obj\Debug\net9.0\refint\WebApi.
 C:\Users\Rodrigo\Documents\Rec\StreamWave\webapi\obj\Debug\net9.0\WebApi.pdb
 C:\Users\Rodrigo\Documents\Rec\StreamWave\webapi\obj\Debug\net9.0\WebApi.genruntimeconfig.cache
 C:\Users\Rodrigo\Documents\Rec\StreamWave\webapi\obj\Debug\net9.0\ref\WebApi.dll
+C:\Users\Rodrigo\Documents\Rec\StreamWave\webapi\bin\Debug\net9.0\BCrypt.Net-Next.dll
+C:\Users\Rodrigo\Documents\Rec\StreamWave\webapi\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
