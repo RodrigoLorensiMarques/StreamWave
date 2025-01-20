@@ -7,11 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebApi.Data;
 using WebApi.DTOs;
+using WebApi.Entities;
 
 namespace WebApi.Controller
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("")]
     public class PlaybackController : ControllerBase
     {
 
@@ -22,7 +23,7 @@ namespace WebApi.Controller
     }
 
 
-    [HttpPost]        
+    [HttpPost("playback/video")]        
     public async Task<IActionResult> PlayBackVideo([FromBody] PlayBackVideoDTO input)
     {
         try
@@ -56,9 +57,9 @@ namespace WebApi.Controller
 
         catch (Exception)
         {
-            return StatusCode(500, "01X41 - Ocorreu um erro interno ao processar sua solicitação");
+            return StatusCode(500, new ResultDTO<Video>("01X41 - Ocorreu um erro interno ao processar sua solicitação"));
         }
     }
 
-        }
+    }
 }

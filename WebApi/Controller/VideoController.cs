@@ -16,7 +16,7 @@ using WebApi.Entities;
 namespace WebApi.Controller
 {   
     [ApiController]
-    [Route("[controller]")]
+    [Route("")]
     public class VideoController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -26,7 +26,7 @@ namespace WebApi.Controller
             _context = context;
         }
 
-        [HttpGet]
+        [HttpGet("videos")]
         public async Task<IActionResult> GetVideosByName([Required]string name)
         {
             try
@@ -59,7 +59,7 @@ namespace WebApi.Controller
         }
 
 
-        [HttpGet("GetAll")]
+        [HttpGet("videos/get-all")]
         public async Task<IActionResult> GetAllVideos()
         {
             try
