@@ -1,14 +1,7 @@
-using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using WebApi.Data;
 using WebApi.DTOs;
 using WebApi.Entities;
@@ -17,6 +10,7 @@ namespace WebApi.Controller
 {   
     [ApiController]
     [Route("")]
+    [Authorize]
     public class VideoController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -93,7 +87,8 @@ namespace WebApi.Controller
             }
         }
 
-
+        
+        [Authorize(Roles ="administrator")]
         [HttpPost("videos/upload")]
         public async Task<IActionResult> UploadVideo([FromForm]UploadVideoDTO input)
         {

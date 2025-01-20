@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebApi.Data;
@@ -22,7 +23,7 @@ namespace WebApi.Controller
         _httpClient = httpClient;
     }
 
-
+    [Authorize]
     [HttpPost("playback/video")]        
     public async Task<IActionResult> PlayBackVideo([FromBody] PlayBackVideoDTO input)
     {
