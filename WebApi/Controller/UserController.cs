@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Data;
@@ -49,11 +50,14 @@ namespace WebApi.Controller
             }
         }
 
-        [HttpPost("create/administrator")]
+        [HttpPost("user/create")]
         public async Task<IActionResult> CreateUserAdmin(CreateUserDTO input)
         {
             try
             {
+                List<string> roles = new List<string>{"standard", "premium", "administrator"};
+
+
                 var userDatabase = await _context.Users.AsNoTracking().Where(x => x.Name == input.Name).ToListAsync();
 
                 if (userDatabase.Any())
@@ -65,19 +69,47 @@ namespace WebApi.Controller
 
                 if(CountCharPassword < 6)
                 {
-                    return BadRequest(new ResultDTO<User>("Nome de usuário não disponível"));
+                    return BadRequest(new ResultDTO<User>("Senha deve possuir pelo menos 6 caracteres"));
                 }
                 
                 string PasswordHash = BCrypt.Net.BCrypt.HashPassword(input.Password);
 
-                User newUserAdmin = new User();
-                newUserAdmin.Name = input.Name;
-                newUserAdmin.Password = PasswordHash;
-                newUserAdmin.Role = "administrator";
 
-                _context.Users.Add(newUserAdmin);
+                var authenticatedUser = HttpContext.User;
+
+                if (authenticatedUser.Identity.IsAuthenticated == true)
+                {
+                    var isAdmin = authenticatedUser.IsInRole("administrator");
+
+                    if (!isAdmin && input.Role!= "standard")
+                    {
+                        return BadRequest(new ResultDTO<User>("Apenas administradores podem criar usuários com role superior a standard"));
+                    }
+
+                    else if (isAdmin && !roles.Contains(input.Role))
+                    {
+                        return BadRequest(new ResultDTO<User>("Role não existe"));
+                    }
+
+                }
+
+                else
+                {   
+                    if (input.Role != "standard")
+                    {
+                        return BadRequest(new ResultDTO<User>("Role não disponível para usuários não logados"));
+                    }
+                }
+
+
+                User newUser = new User();
+                newUser.Name = input.Name;
+                newUser.Password = PasswordHash;
+                newUser.Role = input.Role;
+
+                _context.Users.Add(newUser);
                 await _context.SaveChangesAsync();
-                return Ok(new ResultDTO<User>("Nome de usuário não disponível"));  
+                return Ok(new ResultDTO<User>("Usuário cadastrado com sucesso!"));  
             }
             catch (Exception)
             {

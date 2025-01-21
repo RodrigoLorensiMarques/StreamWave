@@ -17,7 +17,7 @@ namespace WebApi.Services
             _secretKey = configuration.GetSection("JwtSettings:SecretKey").Value;
         }
 
-        public string GenerateJwtToken(string username, int userId, string Rule)
+        public string GenerateJwtToken(string username, int userId, string Role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_secretKey);
@@ -27,7 +27,7 @@ namespace WebApi.Services
                 {
                     new Claim(ClaimTypes.Name, username),
                     new Claim ("id",userId.ToString()),
-                    new Claim(ClaimTypes.Role, Rule)
+                    new Claim(ClaimTypes.Role, Role)
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 Issuer = "API-Login",
