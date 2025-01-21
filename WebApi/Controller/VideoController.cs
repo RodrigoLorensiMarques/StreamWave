@@ -14,12 +14,11 @@ namespace WebApi.Controller
     public class VideoController : ControllerBase
     {
         private readonly AppDbContext _context;
-        private readonly HttpClient _httpClient;
 
-        public VideoController(AppDbContext context, HttpClient httpClient)
+
+        public VideoController(AppDbContext context)
         {
             _context = context;
-            _httpClient = httpClient;
         }
 
         [HttpGet("videos")]
@@ -27,7 +26,7 @@ namespace WebApi.Controller
         {
             try
             {
-                var videosDb = await _context.Videos.Where(x => x.Name.Contains(name)).ToListAsync();
+                var videosDb = await _context.Videos.AsNoTracking().Where(x => x.Name.Contains(name)).ToListAsync();
 
                 if (!videosDb.Any())
                 {
@@ -60,7 +59,7 @@ namespace WebApi.Controller
         {
             try
             {
-                var videosDb = await _context.Videos.ToListAsync();
+                var videosDb = await _context.Videos.AsNoTracking().ToListAsync();
 
                 if (!videosDb.Any())
                 {
@@ -94,7 +93,7 @@ namespace WebApi.Controller
         {
             try
             {
-                var videoDb = await _context.Videos.FirstOrDefaultAsync(x => x.Name == input.Name);
+                var videoDb = await _context.Videos.AsNoTracking().FirstOrDefaultAsync(x => x.Name == input.Name);
 
                  if (videoDb != null)
                  {

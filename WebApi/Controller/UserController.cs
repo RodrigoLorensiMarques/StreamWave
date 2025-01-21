@@ -101,7 +101,6 @@ namespace WebApi.Controller
                     }
                 }
 
-
                 User newUser = new User();
                 newUser.Name = input.Name;
                 newUser.Password = PasswordHash;
