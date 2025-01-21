@@ -14,8 +14,6 @@ namespace WebApi.Controller
     public class VideoController : ControllerBase
     {
         private readonly AppDbContext _context;
-
-
         public VideoController(AppDbContext context)
         {
             _context = context;
@@ -29,9 +27,8 @@ namespace WebApi.Controller
                 var videosDb = await _context.Videos.AsNoTracking().Where(x => x.Name.Contains(name)).ToListAsync();
 
                 if (!videosDb.Any())
-                {
                     return NotFound(new ResultDTO<Video>($"Não existem vídeos com nome de '{name}' "));
-                }
+                
 
                 List<GetVideoDTO> videosDTO = new List<GetVideoDTO>();
 
@@ -48,7 +45,6 @@ namespace WebApi.Controller
             }
             catch (Exception)
             {
-
                 return StatusCode(500, new ResultDTO<Video>("01X37 - Ocorreu um erro interno ao processar sua solicitação"));
             }
         }
@@ -62,9 +58,8 @@ namespace WebApi.Controller
                 var videosDb = await _context.Videos.AsNoTracking().ToListAsync();
 
                 if (!videosDb.Any())
-                {
                     return NotFound(new ResultDTO<Video>("Não há vídeos cadastrados"));
-                }
+    
 
                 List<GetVideoDTO> videosDTO = new List<GetVideoDTO>();
 
@@ -81,7 +76,6 @@ namespace WebApi.Controller
             }
             catch (Exception)
             {
-                
                 return StatusCode(500, new ResultDTO<Video>( "01X38 - Ocorreu um erro interno ao processar sua solicitação"));
             }
         }
@@ -96,14 +90,13 @@ namespace WebApi.Controller
                 var videoDb = await _context.Videos.AsNoTracking().FirstOrDefaultAsync(x => x.Name == input.Name);
 
                  if (videoDb != null)
-                     return BadRequest("Um vídeo com esse nome já foi cadastrado");
+                     return BadRequest(new ResultDTO<Video>("Um vídeo com esse nome já foi cadastrado"));
                 
                 
                 var roleDatabase = await _context.Roles.AsNoTracking().FirstOrDefaultAsync(x => x.Name == input.Role);
 
                 if (roleDatabase == null)
-                    return NotFound($"Role '{input.Role}' não existe");
-
+                    return NotFound(new ResultDTO<User>($"Role '{input.Role}' não existe"));
 
                  Video newVideo = new Video();
                  newVideo.Name = input.Name;
@@ -114,16 +107,13 @@ namespace WebApi.Controller
                  await _context.Videos.AddAsync(newVideo);
                  await _context.SaveChangesAsync();
 
-
                 string fileExtension = Path.GetExtension(input.File.FileName);
 
                 if (!fileExtension.Contains(".mp4"))
                     return BadRequest("Tipo de arquivo não suportado");
 
                 string videosPath = "C:/nginx/var/www/videos";
-
                 input.Name = input.Name + ".mp4";
-
                 string filePath = Path.Combine(videosPath, input.Name);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))

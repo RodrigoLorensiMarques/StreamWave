@@ -19,6 +19,12 @@ namespace WebApi.DTOs
             Messages.Add(message);
         }
 
+        public ResultDTO(List<string> messages)
+        {
+            Messages = messages;
+        }
+        
+
         public ResultDTO(T data)
         {
             Data = data;

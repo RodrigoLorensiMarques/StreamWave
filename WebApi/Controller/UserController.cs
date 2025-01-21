@@ -36,14 +36,16 @@ namespace WebApi.Controller
                     {
                         var roleUserDatabase = await _context.Roles.AsNoTracking().FirstOrDefaultAsync(x => x.id == userDatabase.Roleid);
                         var token = _tokenService.GenerateJwtToken(userDatabase.Name, userDatabase.id, roleUserDatabase.Name);
-                        return Ok(new { message = "Acesso Liberado", token });
+
+                        List<string> message = new List<string>() {"Acesso Liberado", token};
+                        return Ok(new ResultDTO<List<User>>(message));
+
                     }
                     return BadRequest(new ResultDTO<User>("Credenciais incorretas ou usuário não existe"));
                 }
                 else
-                {
                     return BadRequest(new ResultDTO<User>("Credenciais incorretas ou usuário não existe"));
-                }
+
             }
             catch (Exception)
             {
@@ -72,9 +74,8 @@ namespace WebApi.Controller
                 var roleDatabase = await _context.Roles.AsNoTracking().FirstOrDefaultAsync(x => x.Name == input.Role);
 
                 if (roleDatabase == null)
-                {
-                    return NotFound($"Role '{input.Role}' não existe");
-                }
+                    return NotFound(new ResultDTO<User>($"Role '{input.Role}' não existe"));
+
 
                 var authenticatedUser = HttpContext.User;
 
