@@ -96,14 +96,20 @@ namespace WebApi.Controller
                 var videoDb = await _context.Videos.AsNoTracking().FirstOrDefaultAsync(x => x.Name == input.Name);
 
                  if (videoDb != null)
-                 {
                      return BadRequest("Um vídeo com esse nome já foi cadastrado");
-                 }
+                
+                
+                var roleDatabase = await _context.Roles.AsNoTracking().FirstOrDefaultAsync(x => x.Name == input.Role);
+
+                if (roleDatabase == null)
+                    return NotFound($"Role '{input.Role}' não existe");
+
 
                  Video newVideo = new Video();
                  newVideo.Name = input.Name;
                  newVideo.Description = input.Description;
                  newVideo.DateAdd = DateTime.Now;
+                 newVideo.Roleid = roleDatabase.id;
 
                  await _context.Videos.AddAsync(newVideo);
                  await _context.SaveChangesAsync();
