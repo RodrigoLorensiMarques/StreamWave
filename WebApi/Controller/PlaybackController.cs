@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using WebApi.Data;
 using WebApi.DTOs;
@@ -18,9 +19,11 @@ namespace WebApi.Controller
     {
 
     private readonly HttpClient _httpClient;
-    public PlaybackController(HttpClient httpClient)
+    private readonly AppDbContext _context;
+    public PlaybackController(HttpClient httpClient, AppDbContext context)
     {
         _httpClient = httpClient;
+            _context = context;
     }
 
     [Authorize]
@@ -29,6 +32,21 @@ namespace WebApi.Controller
     {
         try
         {
+            var videoDatabase = await _context.Videos.AsNoTracking().FirstAsync(x => x.Name == input.Name);
+            var roleVideoDatabase = await _context.Roles.AsNoTracking().FirstAsync(x => x.id == videoDatabase.id);
+
+            var authenticatedUser = HttpContext.User;
+            var isAdmin = authenticatedUser.IsInRole("administrator");
+            var isPremium = authenticatedUser.IsInRole("premium");
+
+            if (roleVideoDatabase.Name != "standard")
+            {
+                if (!isAdmin && !isPremium)
+                {
+                    return BadRequest(new ResultDTO<User>("Conteúdo não permitido. Restrito a usuários Premium"));
+                }
+            }
+
             string videoUrl = $"http://localhost/videos/{input.Name}.mp4";
 
             HttpResponseMessage response = await _httpClient.GetAsync(videoUrl, HttpCompletionOption.ResponseContentRead);
@@ -39,10 +57,8 @@ namespace WebApi.Controller
                 string contentType;
 
                 if (response.Content.Headers.ContentType != null)
-                {
                     contentType = response.Content.Headers.ContentType.ToString();
-                }
-
+                
                 else{
                     contentType = "/Video.mp4";
                 }
@@ -51,9 +67,7 @@ namespace WebApi.Controller
             }
 
             else
-            {
-                return NotFound($"O vídeo com nome de {input.Name} não foi entrontrado");
-            }
+                return NotFound(new ResultDTO<User>($"O vídeo com nome de {input.Name} não foi entrontrado"));
         }
 
         catch (Exception)
