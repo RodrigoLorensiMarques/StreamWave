@@ -22,7 +22,7 @@ namespace WebApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("WebApi.Entities.User", b =>
+            modelBuilder.Entity("WebApi.Entities.Role", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -34,17 +34,38 @@ namespace WebApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.HasKey("id");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("WebApi.Entities.User", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("VARCHAR")
+                        .HasColumnName("name");
+
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("password");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Roleid")
+                        .HasColumnType("int");
 
                     b.HasKey("id");
 
-                    b.ToTable("Users");
+                    b.HasIndex("Roleid");
+
+                    b.ToTable("users", (string)null);
                 });
 
             modelBuilder.Entity("WebApi.Entities.Video", b =>
@@ -71,9 +92,42 @@ namespace WebApi.Migrations
                         .HasColumnType("VARCHAR")
                         .HasColumnName("name");
 
+                    b.Property<int>("Rolesid")
+                        .HasColumnType("int");
+
                     b.HasKey("id");
 
+                    b.HasIndex("Rolesid");
+
                     b.ToTable("videos", (string)null);
+                });
+
+            modelBuilder.Entity("WebApi.Entities.User", b =>
+                {
+                    b.HasOne("WebApi.Entities.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("Roleid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Users_Role");
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("WebApi.Entities.Video", b =>
+                {
+                    b.HasOne("WebApi.Entities.Role", "Roles")
+                        .WithMany()
+                        .HasForeignKey("Rolesid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Roles");
+                });
+
+            modelBuilder.Entity("WebApi.Entities.Role", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

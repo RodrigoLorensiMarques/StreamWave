@@ -18,12 +18,13 @@ namespace WebApi.Data
 
         public DbSet<Video> Videos { get; set; }
         public DbSet<User> Users { get; set; }
-
+        public DbSet<Role> Roles { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new VideoMap());
+            modelBuilder.ApplyConfiguration(new UserMap());
         }
     }
 }

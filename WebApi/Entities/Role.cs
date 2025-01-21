@@ -5,12 +5,10 @@ using System.Threading.Tasks;
 
 namespace WebApi.Entities
 {
-    public class User
-    {
+    public class Role
+    {   
         public int id { get; set; }
         public string Name { get; set; }
-        public string Password { get; set; }
-        public int Roleid { get; set; }
-        public Role Role { get; set; }
+        public List<User> Users { get; set; } = new List<User>();
     }
 }

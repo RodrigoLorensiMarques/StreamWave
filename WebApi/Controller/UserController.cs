@@ -34,12 +34,13 @@ namespace WebApi.Controller
 
                     if (verified == true)
                     {
-                        var token = _tokenService.GenerateJwtToken(userDatabase.Name, userDatabase.id, userDatabase.Role);
-                        return Ok(new {message="Acesso Liberado", token });
+                        var roleUserDatabase = await _context.Roles.AsNoTracking().FirstOrDefaultAsync(x => x.id == userDatabase.Roleid);
+                        var token = _tokenService.GenerateJwtToken(userDatabase.Name, userDatabase.id, roleUserDatabase.Name);
+                        return Ok(new { message = "Acesso Liberado", token });
                     }
                     return BadRequest(new ResultDTO<User>("Credenciais incorretas ou usuário não existe"));
                 }
-                else 
+                else
                 {
                     return BadRequest(new ResultDTO<User>("Credenciais incorretas ou usuário não existe"));
                 }
@@ -55,25 +56,25 @@ namespace WebApi.Controller
         {
             try
             {
-                List<string> roles = new List<string>{"standard", "premium", "administrator"};
-
-
                 var userDatabase = await _context.Users.AsNoTracking().Where(x => x.Name == input.Name).ToListAsync();
 
                 if (userDatabase.Any())
-                {
                     return BadRequest(new ResultDTO<User>("Nome de usuário não disponível"));
-                }
+
 
                 int CountCharPassword = input.Password.Count();
 
-                if(CountCharPassword < 6)
-                {
+                if (CountCharPassword < 6)
                     return BadRequest(new ResultDTO<User>("Senha deve possuir pelo menos 6 caracteres"));
-                }
-                
+
                 string PasswordHash = BCrypt.Net.BCrypt.HashPassword(input.Password);
 
+                var roleDatabase = await _context.Roles.AsNoTracking().FirstOrDefaultAsync(x => x.Name == input.Role);
+
+                if (roleDatabase == null)
+                {
+                    return NotFound($"Role '{input.Role}' não existe");
+                }
 
                 var authenticatedUser = HttpContext.User;
 
@@ -81,34 +82,24 @@ namespace WebApi.Controller
                 {
                     var isAdmin = authenticatedUser.IsInRole("administrator");
 
-                    if (!isAdmin && input.Role!= "standard")
-                    {
+                    if (!isAdmin && input.Role != "standard")
                         return BadRequest(new ResultDTO<User>("Apenas administradores podem criar usuários com role superior a standard"));
-                    }
-
-                    else if (isAdmin && !roles.Contains(input.Role))
-                    {
-                        return BadRequest(new ResultDTO<User>("Role não existe"));
-                    }
-
                 }
 
                 else
-                {   
+                {
                     if (input.Role != "standard")
-                    {
-                        return BadRequest(new ResultDTO<User>("Role não disponível para usuários não logados"));
-                    }
+                        return BadRequest(new ResultDTO<User>("Role disponível apenas para administradores logados"));
                 }
 
                 User newUser = new User();
                 newUser.Name = input.Name;
                 newUser.Password = PasswordHash;
-                newUser.Role = input.Role;
+                newUser.Roleid = roleDatabase.id;
 
                 _context.Users.Add(newUser);
                 await _context.SaveChangesAsync();
-                return Ok(new ResultDTO<User>("Usuário cadastrado com sucesso!"));  
+                return Ok(new ResultDTO<User>("Usuário cadastrado com sucesso!"));
             }
             catch (Exception)
             {
