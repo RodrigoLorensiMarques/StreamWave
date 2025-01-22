@@ -110,7 +110,7 @@ namespace WebApi.Controller
                 string fileExtension = Path.GetExtension(input.File.FileName);
 
                 if (!fileExtension.Contains(".mp4"))
-                    return BadRequest("Tipo de arquivo não suportado");
+                    return BadRequest(new ResultDTO<User>($"Tipo de arquivo com extensão {fileExtension} não suportado"));
 
                 string videosPath = "C:/nginx/var/www/videos";
                 input.Name = input.Name + ".mp4";
