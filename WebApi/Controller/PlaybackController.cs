@@ -32,14 +32,17 @@ namespace WebApi.Controller
     {
         try
         {
-            var videoDatabase = await _context.Videos.AsNoTracking().FirstAsync(x => x.Name == input.Name);
-            var roleVideoDatabase = await _context.Roles.AsNoTracking().FirstAsync(x => x.id == videoDatabase.id);
+            var videoDatabase = await _context.Videos.AsNoTracking().Include(x => x.Role).FirstOrDefaultAsync(x => x.Name == input.Name);
+
+            if (videoDatabase == null)
+                    return NotFound(new ResultDTO<User>($"Vídeo com nome {input.Name} não foi entrontrado"));
+            
 
             var authenticatedUser = HttpContext.User;
             var isAdmin = authenticatedUser.IsInRole("administrator");
             var isPremium = authenticatedUser.IsInRole("premium");
 
-            if (roleVideoDatabase.Name != "standard")
+            if (videoDatabase.Role.Name != "standard")
             {
                 if (!isAdmin && !isPremium)
                 {
@@ -67,7 +70,7 @@ namespace WebApi.Controller
             }
 
             else
-                return NotFound(new ResultDTO<User>($"O vídeo com nome de {input.Name} não foi entrontrado"));
+                return NotFound(new ResultDTO<User>($"Erro interno. Vídeo com nome {input.Name} não foi entrontrado"));
         }
 
         catch (Exception)
