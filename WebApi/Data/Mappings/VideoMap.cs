@@ -24,8 +24,7 @@ namespace WebApi.Data.Mappings
             builder.Property(x => x.Description)
             .HasColumnName("description")
             .HasColumnType("VARCHAR")
-            .HasMaxLength(250)
-            .IsRequired();
+            .HasMaxLength(250);
 
             builder.Property(x => x.DateAdd)
             .HasColumnName("date_add")
