@@ -87,6 +87,13 @@ namespace WebApi.Controller
         {
             try
             {
+
+                string fileExtension = Path.GetExtension(input.File.FileName);
+
+                if (!fileExtension.Contains(".mp4"))
+                    return BadRequest(new ResultDTO<User>($"Tipo de arquivo com extensão {fileExtension} não suportado"));
+
+
                 var videoDb = await _context.Videos.AsNoTracking().FirstOrDefaultAsync(x => x.Name == input.Name);
 
                  if (videoDb != null)
@@ -106,11 +113,6 @@ namespace WebApi.Controller
 
                  await _context.Videos.AddAsync(newVideo);
                  await _context.SaveChangesAsync();
-
-                string fileExtension = Path.GetExtension(input.File.FileName);
-
-                if (!fileExtension.Contains(".mp4"))
-                    return BadRequest(new ResultDTO<User>($"Tipo de arquivo com extensão {fileExtension} não suportado"));
 
                 string videosPath = "C:/nginx/var/www/videos";
                 input.Name = input.Name + ".mp4";
