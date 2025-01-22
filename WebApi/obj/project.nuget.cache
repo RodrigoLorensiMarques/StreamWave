@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "R4mcForKTmA=",
+  "dgSpecHash": "xzXUA7Hkctg=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Rodrigo\\Documents\\Rec\\StreamWave\\webapi\\WebApi.csproj",
+  "projectFilePath": "C:\\Users\\Rodrigo\\Documents\\Rec\\StreamWave\\WebApi\\WebApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Rodrigo\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\Rodrigo\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

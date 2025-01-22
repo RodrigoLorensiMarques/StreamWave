@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Rodrigo\\Documents\\Rec\\StreamWave\\webapi\\WebApi.csproj": {}
+    "C:\\Users\\Rodrigo\\Documents\\Rec\\StreamWave\\WebApi\\WebApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Rodrigo\\Documents\\Rec\\StreamWave\\webapi\\WebApi.csproj": {
+    "C:\\Users\\Rodrigo\\Documents\\Rec\\StreamWave\\WebApi\\WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Rodrigo\\Documents\\Rec\\StreamWave\\webapi\\WebApi.csproj",
+        "projectUniqueName": "C:\\Users\\Rodrigo\\Documents\\Rec\\StreamWave\\WebApi\\WebApi.csproj",
         "projectName": "WebApi",
-        "projectPath": "C:\\Users\\Rodrigo\\Documents\\Rec\\StreamWave\\webapi\\WebApi.csproj",
+        "projectPath": "C:\\Users\\Rodrigo\\Documents\\Rec\\StreamWave\\WebApi\\WebApi.csproj",
         "packagesPath": "C:\\Users\\Rodrigo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Rodrigo\\Documents\\Rec\\StreamWave\\webapi\\obj\\",
+        "outputPath": "C:\\Users\\Rodrigo\\Documents\\Rec\\StreamWave\\WebApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Rodrigo\\AppData\\Roaming\\NuGet\\NuGet.Config"
