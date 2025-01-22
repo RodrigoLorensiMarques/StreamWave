@@ -22,9 +22,9 @@ StreamWave é uma plataforma de streaming de vídeo, onde é utilzado Nginx para
 __OBS.:__ Para criar usuários com role de admin é necessário estar autenticado com um token com role admin.
 
 ### Video [Authorize]
-- __GET /videos{name}:__ Recupera informações de um vídeo pelo nome. 
+- __GET /videos{name}__ Recupera informações de um vídeo pelo nome. 
 - __GET /videos/get-all__ Recupera informações de todos os vídeos cadastrados.
-- __POST /videos/upload__ Realiza cadastro e upload de um vídeo com extensão .mp4, podendo especificar qual role de usuário sera permitido acessar.
+- __POST /videos/upload__ Permite administradores realizarem cadastro e upload de um vídeo com extensão .mp4, podendo especificar qual role de usuário será permitida acessar.
 
 
 ## Tabelas
