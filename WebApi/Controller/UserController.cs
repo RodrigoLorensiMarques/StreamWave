@@ -26,7 +26,7 @@ namespace WebApi.Controller
         {
             try
             {
-                var userDatabase = await _context.Users.AsNoTracking().SingleOrDefaultAsync(x => x.Name == input.Name);
+                var userDatabase = await _context.Users.AsNoTracking().Include(x => x.Role).SingleOrDefaultAsync(x => x.Name == input.Name);
 
                 if (userDatabase != null)
                 {
@@ -34,8 +34,7 @@ namespace WebApi.Controller
 
                     if (verified == true)
                     {
-                        var roleUserDatabase = await _context.Roles.AsNoTracking().FirstOrDefaultAsync(x => x.id == userDatabase.RoleId);
-                        var token = _tokenService.GenerateJwtToken(userDatabase.Name, userDatabase.id, roleUserDatabase.Name);
+                        var token = _tokenService.GenerateJwtToken(userDatabase.Name, userDatabase.id, userDatabase.Role.Name);
 
                         List<string> message = new List<string>() {"Acesso Liberado", token};
                         return Ok(new ResultDTO<List<User>>(message));
