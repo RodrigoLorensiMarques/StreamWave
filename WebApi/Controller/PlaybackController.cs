@@ -23,7 +23,7 @@ namespace WebApi.Controller
     public PlaybackController(HttpClient httpClient, AppDbContext context)
     {
         _httpClient = httpClient;
-            _context = context;
+        _context = context;
     }
 
     [Authorize]

@@ -11,7 +11,7 @@ namespace WebApi.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime DateAdd { get; set; }
-        public int Roleid { get; set; }
+        public int RoleId { get; set; }
         public Role Role { get; set; }
     }
 }

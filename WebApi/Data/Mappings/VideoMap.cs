@@ -31,6 +31,11 @@ namespace WebApi.Data.Mappings
             .HasColumnName("date_add")
             .HasColumnType("DATETIME2")
             .IsRequired();
+
+            builder.Property(x => x.RoleId)
+            .HasColumnName("role_id")
+            .HasColumnType("INTEGER")
+            .IsRequired();
         }
     }
 }

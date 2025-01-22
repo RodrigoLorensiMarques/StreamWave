@@ -12,8 +12,8 @@ using WebApi.Data;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250121214420_refactorVideoEntitie")]
-    partial class refactorVideoEntitie
+    [Migration("20250122120312_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,11 +35,13 @@ namespace WebApi.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("VARCHAR")
+                        .HasColumnName("name");
 
                     b.HasKey("id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("roles", (string)null);
                 });
 
             modelBuilder.Entity("WebApi.Entities.User", b =>
@@ -61,12 +63,13 @@ namespace WebApi.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("password");
 
-                    b.Property<int>("Roleid")
-                        .HasColumnType("int");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("role_id");
 
                     b.HasKey("id");
 
-                    b.HasIndex("Roleid");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("users", (string)null);
                 });
@@ -95,12 +98,13 @@ namespace WebApi.Migrations
                         .HasColumnType("VARCHAR")
                         .HasColumnName("name");
 
-                    b.Property<int>("Roleid")
-                        .HasColumnType("int");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("role_id");
 
                     b.HasKey("id");
 
-                    b.HasIndex("Roleid");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("videos", (string)null);
                 });
@@ -109,7 +113,7 @@ namespace WebApi.Migrations
                 {
                     b.HasOne("WebApi.Entities.Role", "Role")
                         .WithMany("Users")
-                        .HasForeignKey("Roleid")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_Users_Role");
@@ -121,7 +125,7 @@ namespace WebApi.Migrations
                 {
                     b.HasOne("WebApi.Entities.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("Roleid")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

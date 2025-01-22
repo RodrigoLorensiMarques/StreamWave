@@ -25,6 +25,7 @@ namespace WebApi.Data
         {
             modelBuilder.ApplyConfiguration(new VideoMap());
             modelBuilder.ApplyConfiguration(new UserMap());
+            modelBuilder.ApplyConfiguration(new RoleMap());
         }
     }
 }

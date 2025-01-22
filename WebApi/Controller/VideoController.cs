@@ -102,7 +102,7 @@ namespace WebApi.Controller
                  newVideo.Name = input.Name;
                  newVideo.Description = input.Description;
                  newVideo.DateAdd = DateTime.Now;
-                 newVideo.Roleid = roleDatabase.id;
+                 newVideo.RoleId = roleDatabase.id;
 
                  await _context.Videos.AddAsync(newVideo);
                  await _context.SaveChangesAsync();

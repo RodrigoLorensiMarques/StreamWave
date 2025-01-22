@@ -25,6 +25,11 @@ namespace WebApi.Data.Mappings
             .HasColumnName("password")
             .IsRequired();
 
+            builder.Property(x => x.RoleId)
+            .HasColumnName("role_id")
+            .HasColumnType("INTEGER")
+            .IsRequired();
+
             builder
             .HasOne(x => x.Role)
             .WithMany(x => x.Users)
