@@ -32,3 +32,36 @@ __OBS.:__ Para criar usuários com role de admin é necessário estar autenticad
 
 
 ## Como Rodar
+### Requisitos:
+- [.NET 9](https://dotnet.microsoft.com/pt-br/download)
+- [Docker](https://docs.docker.com/get-started/get-docker/)
+
+### Passo a Passo:
+1. Em seu terminal, acesse a pasta raiz do repositório
+
+2. Suba os serviços:
+   ```
+   docker-compose up
+   ```
+5. No diretório __WebApi__, restaure os pacotes:
+   ```
+   dotnet restore
+   ```
+
+7. Aplique as migrations:
+   ```
+   dotnet-ef database update
+   ```
+8. Crie as roles no banco:
+   ```
+   INSERT INTO roles
+   VALUES ('administrator'), ('premium'), ('standard')
+   ```
+9. Crei um usuário admin no banco: \
+   __User:__ admin __Password:__ admin123
+   ```
+   INSERT INTO users
+   VALUES ('admin', '$2a$11$69ddoeK/rQFdU.HD81IKSeCOADOdDoizztgXZiFI1rvPTemw2xAjS', 1)
+   ```
+
+11. Pronto! Agora você pode acessar o [http://localhost:5124/swagger](http://localhost:5077/swagger/index.html) para ter acesso a interface do Swagger.
