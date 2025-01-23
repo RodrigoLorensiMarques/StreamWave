@@ -1,6 +1,6 @@
 # StreamWave
  
-StreamWave é uma plataforma de streaming de vídeo, onde é utilzado Nginx para servir as mídias e ASP.NET Core para gerenciar as requisições de lógica de aplicação e controles de acesso, realizando controle de acesso em vídeos via roles com JWT. 
+StreamWave é uma aplicação de streaming de vídeo, onde é utilzado Nginx para servir as mídias e ASP.NET Core para gerenciar as requisições de lógica de aplicação e controles de acesso, realizando controle de acesso em vídeos via roles com JWT. 
 
 
 ## Tecnologias
