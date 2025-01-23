@@ -114,7 +114,7 @@ namespace WebApi.Controller
                  await _context.Videos.AddAsync(newVideo);
                  await _context.SaveChangesAsync();
 
-                string videosPath = "C:/Users/Rodrigo/Documents/Rec/StreamWave/nginx/data/www/videos";
+                string videosPath = Path.Combine(Directory.GetCurrentDirectory(), "..","nginx","data", "www", "videos");
                 input.Name = input.Name + ".mp4";
                 string filePath = Path.Combine(videosPath, input.Name);
 
