@@ -16,6 +16,18 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=mssql;Database=StreamWave;User Id=sa;Password=Password123!;Encrypt=False
 
+
+  nginx:
+      restart: always
+      image: nginx:1-alpine
+      ports:
+        - 8089:80
+      depends_on:
+        - streamwave
+      volumes:
+        - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
+        - ./nginx/data/www:/var/www
+    
     
   mssqldata:
     image: mcr.microsoft.com/mssql/server:2022-latest
