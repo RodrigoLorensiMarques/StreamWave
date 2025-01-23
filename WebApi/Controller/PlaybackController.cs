@@ -50,7 +50,7 @@ namespace WebApi.Controller
                 }
             }
 
-            string videoUrl = $"http://localhost/videos/{input.Name}.mp4";
+            string videoUrl = $"http://localhost:8089/videos/{input.Name}.mp4";
 
             HttpResponseMessage response = await _httpClient.GetAsync(videoUrl, HttpCompletionOption.ResponseContentRead);
 
