@@ -28,22 +28,19 @@ namespace WebApi.Controller
             {
                 var userDatabase = await _context.Users.AsNoTracking().Include(x => x.Role).SingleOrDefaultAsync(x => x.Name == input.Name);
 
-                if (userDatabase != null)
-                {
-                    bool verified = BCrypt.Net.BCrypt.Verify(input.Password, userDatabase.Password);
+                if (userDatabase == null)
+                    return StatusCode(401, new ResultDTO<User>("Credenciais incorretas ou usuário não existe"));
 
-                    if (verified == true)
-                    {
-                        var token = _tokenService.GenerateJwtToken(userDatabase.Name, userDatabase.id, userDatabase.Role.Name);
+                bool verified = BCrypt.Net.BCrypt.Verify(input.Password, userDatabase.Password);
 
-                        //List<string> message = new List<string>() {"Acesso Liberado", token};
-                        return Ok(new ResultDTO<List<string>>(new List<string>() {"Acesso Liberado", token}, null));
+                 if (verified == true)
+                 {
+                     var token = _tokenService.GenerateJwtToken(userDatabase.Name, userDatabase.id, userDatabase.Role.Name);
 
-                    }
-                    return BadRequest(new ResultDTO<User>("Credenciais incorretas ou usuário não existe"));
-                }
-                else
-                    return BadRequest(new ResultDTO<User>("Credenciais incorretas ou usuário não existe"));
+                     return Ok(new ResultDTO<List<string>>(new List<string>() {"Acesso Liberado", token}, null));
+                 }
+
+                return StatusCode(401, new ResultDTO<User>("Credenciais incorretas ou usuário não existe"));
 
             }
             catch (Exception)
