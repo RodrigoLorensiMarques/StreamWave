@@ -8,20 +8,20 @@ namespace WebApi.DTOs
     public class ResultDTO<T>
     {
 
-        public ResultDTO(T data, string message)
+        public ResultDTO(T data, string error)
         {
             Data = data;
-            Messages.Add(message);
+            Errors.Add(error);
         }
 
-        public ResultDTO(string message)
+        public ResultDTO(string error)
         {
-            Messages.Add(message);
+            Errors.Add(error);
         }
 
-        public ResultDTO(List<string> messages)
+        public ResultDTO(List<string> errors)
         {
-            Messages = messages;
+            Errors = errors;
         }
         
 
@@ -32,6 +32,6 @@ namespace WebApi.DTOs
 
 
         public T Data { get; private set; }
-        public List<string> Messages { get; private set; } = new List<string>();
+        public List<string> Errors { get; private set; } = new List<string>();
     }
 }

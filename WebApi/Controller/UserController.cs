@@ -36,8 +36,8 @@ namespace WebApi.Controller
                     {
                         var token = _tokenService.GenerateJwtToken(userDatabase.Name, userDatabase.id, userDatabase.Role.Name);
 
-                        List<string> message = new List<string>() {"Acesso Liberado", token};
-                        return Ok(new ResultDTO<List<User>>(message));
+                        //List<string> message = new List<string>() {"Acesso Liberado", token};
+                        return Ok(new ResultDTO<List<string>>(new List<string>() {"Acesso Liberado", token}, null));
 
                     }
                     return BadRequest(new ResultDTO<User>("Credenciais incorretas ou usuário não existe"));
@@ -99,7 +99,7 @@ namespace WebApi.Controller
 
                 _context.Users.Add(newUser);
                 await _context.SaveChangesAsync();
-                return Ok(new ResultDTO<User>("Usuário cadastrado com sucesso!"));
+                return Ok(new ResultDTO<string>("Usuário cadastrado com sucesso!", null));
             }
             catch (Exception)
             {

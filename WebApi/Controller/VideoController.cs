@@ -27,7 +27,7 @@ namespace WebApi.Controller
                 var videosDb = await _context.Videos.AsNoTracking().Where(x => x.Name.Contains(name)).ToListAsync();
 
                 if (!videosDb.Any())
-                    return NotFound(new ResultDTO<Video>($"Não existem vídeos com nome de '{name}' "));
+                    return NotFound(new ResultDTO<Video>($"Não existem vídeos com nome '{name}' "));
                 
 
                 List<GetVideoDTO> videosDTO = new List<GetVideoDTO>();
