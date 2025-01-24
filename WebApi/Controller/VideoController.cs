@@ -17,6 +17,7 @@ namespace WebApi.Controller
         public VideoController(AppDbContext context)
         {
             _context = context;
+
         }
 
         [HttpGet("videos")]
@@ -56,7 +57,16 @@ namespace WebApi.Controller
         {
             try
             {
-                var videosDb = await _context.Videos.AsNoTracking().ToListAsync();
+                var authenticatedUser = HttpContext.User;
+
+                List<Video> videosDb = new List<Video>();
+
+                if(authenticatedUser.IsInRole("standard"))
+                    videosDb = await _context.Videos.AsNoTracking().Where(x => x.Role.Name == "standard").Include(x => x.Role).ToListAsync();
+                    
+                else 
+                    videosDb = await _context.Videos.AsNoTracking().ToListAsync();
+                
 
                 if (!videosDb.Any())
                     return NotFound(new ResultDTO<Video>("Não há vídeos cadastrados"));
@@ -78,7 +88,7 @@ namespace WebApi.Controller
             }
             catch (Exception)
             {
-                return StatusCode(500, new ResultDTO<Video>( "01X38 - Ocorreu um erro interno ao processar sua solicitação"));
+               return StatusCode(500, new ResultDTO<Video>( "01X38 - Ocorreu um erro interno ao processar sua solicitação"));
             }
         }
     }
