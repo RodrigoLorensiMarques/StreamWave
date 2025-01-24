@@ -13,6 +13,11 @@ StreamWave é uma aplicação de streaming de vídeo, onde é utilzado Nginx par
 - JWT Bearer
 
 ## Endpoints
+
+### Manager [Authorize(Roles ="administrator")]
+- __POST manager/videos/upload__ Permite administradores realizarem cadastro e upload de um vídeo com extensão .mp4, podendo especificar qual role de usuário será permitida acessar.
+- __DELETE manager/videos__ Permite administradores deletar vídeo pelo id.
+
 ### Playback
 - __POST /playback/video:__ Usuários autenticados podem recuperar um vídeo pelo nome. Caso o vídeo não seja permitido para sua role o acesso sera negado. 
 
@@ -24,7 +29,7 @@ __OBS.:__ Para criar usuários com role de admin é necessário estar autenticad
 ### Video [Authorize]
 - __GET /videos{name}__ Recupera informações de um vídeo pelo nome. 
 - __GET /videos/get-all__ Recupera informações de todos os vídeos cadastrados.
-- __POST /videos/upload__ Permite administradores realizarem cadastro e upload de um vídeo com extensão .mp4, podendo especificar qual role de usuário será permitida acessar.
+
 
 
 ## Tabelas
@@ -65,3 +70,7 @@ __OBS.:__ Para criar usuários com role de admin é necessário estar autenticad
    ```
 
 11. Pronto! Agora você pode acessar o [http://localhost:5124/swagger](http://localhost:5077/swagger/index.html) para ter acesso a interface do Swagger.
+
+
+## Demonstração
+https://github.com/user-attachments/assets/144e6cc5-37c8-44d3-a446-8716c6b270f8
