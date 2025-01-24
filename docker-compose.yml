@@ -15,6 +15,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=mssql;Database=StreamWave;User Id=sa;Password=Password123!;Encrypt=False
+    volumes: 
+      - ./nginx/data/www:/nginx/data/www
 
 
   nginx:
@@ -24,6 +26,8 @@ services:
         - 8089:80
       depends_on:
         - streamwave
+      networks:
+      - app-network
       volumes:
         - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
         - ./nginx/data/www:/var/www
