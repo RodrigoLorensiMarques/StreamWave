@@ -28,7 +28,7 @@ __OBS.:__ Para criar usuários com role de admin é necessário estar autenticad
 
 ### Video [Authorize]
 - __GET /videos{name}__ Recupera informações de um vídeo por __nome__. 
-- __GET /videos/get-all__ Recupera informações de todos os vídeos disponíveis na role do usuário.
+- __GET /videos/get-all__ Recupera informações de todos os vídeos disponíveis na role do usuário, de forma paginada.
 
 
 
