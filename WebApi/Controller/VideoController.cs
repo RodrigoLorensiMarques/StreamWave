@@ -53,7 +53,7 @@ namespace WebApi.Controller
 
 
         [HttpGet("videos/get-all")]
-        public async Task<IActionResult> GetAllVideos()
+        public async Task<IActionResult> GetAllVideos([FromQuery]int page=0, [FromQuery]int pageSize=10)
         {
             try
             {
@@ -62,10 +62,10 @@ namespace WebApi.Controller
                 List<Video> videosDb = new List<Video>();
 
                 if(authenticatedUser.IsInRole("standard"))
-                    videosDb = await _context.Videos.AsNoTracking().Where(x => x.Role.Name == "standard").Include(x => x.Role).ToListAsync();
+                    videosDb = await _context.Videos.AsNoTracking().Where(x => x.Role.Name == "standard").Include(x => x.Role).OrderBy(x => x.Name).Skip(page*pageSize).Take(pageSize).ToListAsync();
                     
                 else 
-                    videosDb = await _context.Videos.AsNoTracking().ToListAsync();
+                    videosDb = await _context.Videos.AsNoTracking().OrderBy(x => x.Name).Skip(page*pageSize).Take(pageSize).ToListAsync();
                 
 
                 if (!videosDb.Any())
