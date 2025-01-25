@@ -60,7 +60,7 @@ namespace WebApi.Controller
                         await input.File.CopyToAsync(stream);
                     }
 
-                return Ok(new ResultDTO<UploadVideoDTO>($"Arquivo {input.Name} enviado com sucesso"));
+            return Ok(new ResultDTO<List<string>>(new List<string>() {$"Arquivo {input.Name} enviado com sucesso",$"id: {newVideoId.ToString()}"}, null));
             }
             catch (Exception)
             {
