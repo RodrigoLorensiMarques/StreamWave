@@ -34,13 +34,6 @@ namespace WebApi.Controller
 
                 if (!fileExtension.Contains(".mp4"))
                     return BadRequest(new ResultDTO<User>($"Tipo de arquivo com extensão {fileExtension} não suportado"));
-
-
-                var videoDb = await _context.Videos.AsNoTracking().FirstOrDefaultAsync(x => x.Name == input.Name);
-
-                 if (videoDb != null)
-                     return BadRequest(new ResultDTO<Video>("Um vídeo com esse nome já foi cadastrado"));
-                
                 
                 var roleDatabase = await _context.Roles.AsNoTracking().FirstOrDefaultAsync(x => x.Name == input.Role);
 
@@ -56,9 +49,11 @@ namespace WebApi.Controller
                  await _context.Videos.AddAsync(newVideo);
                  await _context.SaveChangesAsync();
 
+                var newVideoId = newVideo.id;
+
                 string videosPath = Path.Combine(Directory.GetCurrentDirectory(), "..","nginx","data", "www", "videos");
-                input.Name = input.Name + ".mp4";
-                string filePath = Path.Combine(videosPath, input.Name);
+                string videoNameDirectory = newVideoId + ".mp4";
+                string filePath = Path.Combine(videosPath, videoNameDirectory);
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                     {

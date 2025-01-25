@@ -74,13 +74,13 @@ namespace WebApi.Controller
                     var isAdmin = authenticatedUser.IsInRole("administrator");
 
                     if (!isAdmin && input.Role != "standard")
-                        return BadRequest(new ResultDTO<User>("Apenas administradores podem criar usuários com role superior a standard"));
+                        return StatusCode(401, new ResultDTO<User>("Apenas administradores podem criar usuários com role superior a standard"));
                 }
 
                 else
                 {
                     if (input.Role != "standard")
-                        return BadRequest(new ResultDTO<User>("Role disponível apenas para administradores logados"));
+                        return StatusCode(401, new ResultDTO<User>("Role disponível apenas para administradores logados"));
                 }
 
                 User newUser = new User();

@@ -32,10 +32,10 @@ namespace WebApi.Controller
     {
         try
         {
-            var videoDatabase = await _context.Videos.AsNoTracking().Include(x => x.Role).FirstOrDefaultAsync(x => x.Name == input.Name);
+            var videoDatabase = await _context.Videos.AsNoTracking().Include(x => x.Role).FirstOrDefaultAsync(x => x.id == input.Id);
 
             if (videoDatabase == null)
-                    return NotFound(new ResultDTO<User>($"Vídeo com nome {input.Name} não foi entrontrado"));
+                    return NotFound(new ResultDTO<User>($"Vídeo não foi entrontrado"));
             
 
             var authenticatedUser = HttpContext.User;
@@ -46,11 +46,11 @@ namespace WebApi.Controller
             {
                 if (!isAdmin && !isPremium)
                 {
-                    return BadRequest(new ResultDTO<User>("Conteúdo não permitido. Restrito a usuários Premium"));
+                    return BadRequest(new ResultDTO<User>("Conteúdo restrito a usuários Premium"));
                 }
             }
 
-            string videoUrl = $"http://nginx:80/videos/{input.Name}.mp4";
+            string videoUrl = $"http://nginx:80/videos/{input.Id}.mp4";
 
             HttpResponseMessage response = await _httpClient.GetAsync(videoUrl, HttpCompletionOption.ResponseContentRead);
 
@@ -70,7 +70,7 @@ namespace WebApi.Controller
             }
 
             else
-                return NotFound(new ResultDTO<User>($"Erro interno. Vídeo com nome {input.Name} não foi entrontrado"));
+                return NotFound(new ResultDTO<User>($"Erro interno. Vídeo não foi encontrado"));
         }
 
         catch (Exception)

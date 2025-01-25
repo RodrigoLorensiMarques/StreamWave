@@ -9,6 +9,6 @@ namespace WebApi.DTOs
     public class PlayBackVideoDTO
     {  
         [Required (ErrorMessage = "Um nome é obrigatório")]
-        public string Name { get; set; }
+        public int Id { get; set; }
     }
 }
