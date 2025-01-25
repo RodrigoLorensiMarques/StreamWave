@@ -16,10 +16,10 @@ StreamWave é uma aplicação de streaming de vídeo, onde é utilzado Nginx par
 
 ### Manager [Authorize(Roles ="administrator")]
 - __POST manager/videos/upload__ Permite administradores realizarem cadastro e upload de um vídeo com extensão .mp4, podendo especificar qual role de usuário será permitida acessar.
-- __DELETE manager/videos__ Permite administradores deletar vídeo pelo id.
+- __DELETE manager/videos__ Permite administradores deletar vídeo por __id__.
 
 ### Playback
-- __POST /playback/video:__ Usuários autenticados podem recuperar um vídeo pelo nome. Caso o vídeo não seja permitido para sua role o acesso sera negado. 
+- __POST /playback/video:__ Usuários autenticados podem recuperar um vídeo por __id__. Caso o vídeo não seja permitido para sua role o acesso sera negado. 
 
 ### User
 - __POST /login:__ Realiza autenticação de usuários e devolve JWT.
@@ -27,8 +27,8 @@ StreamWave é uma aplicação de streaming de vídeo, onde é utilzado Nginx par
 __OBS.:__ Para criar usuários com role de admin é necessário estar autenticado com um token com role admin.
 
 ### Video [Authorize]
-- __GET /videos{name}__ Recupera informações de um vídeo pelo nome. 
-- __GET /videos/get-all__ Recupera informações de todos os vídeos cadastrados.
+- __GET /videos{name}__ Recupera informações de um vídeo por __nome__. 
+- __GET /videos/get-all__ Recupera informações de todos os vídeos disponíveis na role do usuário.
 
 
 
@@ -73,4 +73,6 @@ __OBS.:__ Para criar usuários com role de admin é necessário estar autenticad
 
 
 ## Demonstração
-https://github.com/user-attachments/assets/144e6cc5-37c8-44d3-a446-8716c6b270f8
+https://github.com/user-attachments/assets/0d47baef-794b-4819-8020-d26899f18644
+
+
