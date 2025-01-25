@@ -8,14 +8,14 @@ using WebApi.Entities;
 namespace WebApi.DTOs
 {
     public class CreateUserDTO
-    {   
-        [Required (ErrorMessage ="Nome é obrigatório")]
+    {
+        [Required(ErrorMessage = "Nome é obrigatório")]
         public string Name { get; set; }
 
-        [Required (ErrorMessage ="Senha é obrigatório")]
+        [Required (ErrorMessage ="Senha é obrigatório"), MinLength(6, ErrorMessage = "Senha deve possuir pelo menos 6 caracteres")]
         public string Password { get; set; }
 
-        [Required (ErrorMessage ="Role é obrigatório")]
+        [Required (ErrorMessage ="Role é obrigatória")]
         public string Role { get; set; }
     }
 }

@@ -59,12 +59,6 @@ namespace WebApi.Controller
                 if (userDatabase.Any())
                     return BadRequest(new ResultDTO<User>("Nome de usuário não disponível"));
 
-
-                int CountCharPassword = input.Password.Count();
-
-                if (CountCharPassword < 6)
-                    return BadRequest(new ResultDTO<User>("Senha deve possuir pelo menos 6 caracteres"));
-
                 string PasswordHash = BCrypt.Net.BCrypt.HashPassword(input.Password);
 
                 var roleDatabase = await _context.Roles.AsNoTracking().FirstOrDefaultAsync(x => x.Name == input.Role);
